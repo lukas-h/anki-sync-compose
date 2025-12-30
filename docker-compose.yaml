@@ -5,12 +5,15 @@ services:
       context: .
       dockerfile: Dockerfile
       network: host
-    #ports:
-    #  - 8080:8080
+      args:
+        - ANKI_VERSION=${ANKI_VERSION:-25.09.2}
+        - ANKI_PACKAGE=${ANKI_PACKAGE:-anki-25.09.2-linux-qt6}
     environment:
-      - SYNC_USER1=user:pass
-      #- SYNC_USER2=user2:pass2
-      #- etc...
-      - SYNC_BASE=/syncserver
+      - SYNC_USER1=${SYNC_USER1:?Please set SYNC_USER1 in format user:pass}
+      - SYNC_USER2=${SYNC_USER2:-}
+      - SYNC_USER3=${SYNC_USER3:-}
+      - SYNC_USER4=${SYNC_USER4:-}
+      - SYNC_USER5=${SYNC_USER5:-}
+      - SYNC_BASE=${SYNC_BASE:-/syncserver}
     volumes:
-      - ./syncserver:/syncserver
+      - ${DATA_PATH:-./syncserver}:/syncserver

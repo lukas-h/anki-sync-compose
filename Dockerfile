@@ -1,7 +1,7 @@
 FROM debian:12.1-slim as builder
 
-ARG ANKI_VERSION=2.1.65
-ARG ANKI_PACKAGE=anki-2.1.65-linux-qt6
+ARG ANKI_VERSION=25.09.2
+ARG ANKI_PACKAGE=anki-25.09.2-linux-qt6
 
 RUN apt-get update && apt-get install -y wget zstd xdg-utils
 
