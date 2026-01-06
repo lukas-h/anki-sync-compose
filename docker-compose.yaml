@@ -5,9 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
       network: host
-      args:
-        - ANKI_VERSION=${ANKI_VERSION:-24.06.3}
-        - ANKI_PACKAGE=${ANKI_PACKAGE:-anki-24.06.3-linux-qt6}
     environment:
       - SYNC_USER1=${SYNC_USER1:?Please set SYNC_USER1 in format user:pass}
       - SYNC_USER2=${SYNC_USER2:-}
