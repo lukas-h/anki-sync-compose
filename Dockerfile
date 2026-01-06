@@ -1,18 +1,13 @@
 FROM debian:12.1-slim as builder
 
-# Anki version - hardcoded to prevent Coolify from overriding with empty values
-ARG ANKI_VERSION
-ARG ANKI_PACKAGE
-
 RUN apt-get update && apt-get install -y wget zstd xdg-utils
 
 # Download and install Anki 24.06.3 (hardcoded - last version with .tar.zst files)
-RUN ANKI_VER="${ANKI_VERSION:-24.06.3}" && \
-    ANKI_PKG="${ANKI_PACKAGE:-anki-24.06.3-linux-qt6}" && \
-    wget "https://github.com/ankitects/anki/releases/download/${ANKI_VER}/${ANKI_PKG}.tar.zst" && \
-    zstd -d ${ANKI_PKG}.tar.zst && \
-    tar -xvf ${ANKI_PKG}.tar && \
-    cd ${ANKI_PKG} && \
+# NOTE: Version is hardcoded because Anki 25.x no longer provides .tar.zst downloads
+RUN wget "https://github.com/ankitects/anki/releases/download/24.06.3/anki-24.06.3-linux-qt6.tar.zst" && \
+    zstd -d anki-24.06.3-linux-qt6.tar.zst && \
+    tar -xvf anki-24.06.3-linux-qt6.tar && \
+    cd anki-24.06.3-linux-qt6 && \
     ./install.sh
 
 FROM debian:12.1-slim
