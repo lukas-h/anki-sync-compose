@@ -46,8 +46,8 @@ Configure these in the Coolify environment variables tab or in a `.env` file:
 - `SYNC_USER2` through `SYNC_USER5` - Additional user credentials
 - `SYNC_BASE` - Base path for sync data (default: `/syncserver`)
 - `DATA_PATH` - Host path for data storage (default: `./syncserver`)
-- `ANKI_VERSION` - Anki version to install (default: `25.09.2`)
-- `ANKI_PACKAGE` - Anki package name (default: `anki-25.09.2-linux-qt6`)
+- `ANKI_VERSION` - Anki version to install (default: `24.06.3`)
+- `ANKI_PACKAGE` - Anki package name (default: `anki-24.06.3-linux-qt6`)
 
 **MCP Flashcard Server:**
 - `AUTO_GENERATE` - Enable proactive flashcard generation (default: `true`)
@@ -127,16 +127,89 @@ Claude: [Creates flashcards]
 
 ## Coolify Deployment
 
-1. Create a new service in Coolify
-2. Select "Docker Compose" as the build pack
-3. Point to this repository
-4. Set the required environment variables:
-   - `SYNC_USER1=user:password`
-   - `ANTHROPIC_API_KEY=sk-ant-xxxxx`
-5. Configure optional variables as needed
-6. Deploy
+### Step-by-Step Guide
 
-The MCP server will be available on port 8080.
+1. **Create New Service** in Coolify
+   - Click "Add New Resource" → "Service"
+   - Select "Docker Compose" as the build pack
+
+2. **Connect Repository**
+   - Point to this repository: `https://github.com/lukas-h/anki-sync-compose`
+   - Select branch: `main` (or your preferred branch)
+
+3. **Configure Environment Variables** (CRITICAL!)
+
+   Go to the **Environment Variables** tab and add these **required** variables:
+
+   ```
+   SYNC_USER1=myusername:mypassword
+   ANTHROPIC_API_KEY=sk-ant-api03-xxxxxxxxxxxxxxxxxxxxx
+   ```
+
+   **Optional variables** (recommended):
+   ```
+   AUTO_GENERATE=true
+   MCP_PORT=8080
+   DATA_PATH=/data/anki-sync
+   ```
+
+   ⚠️ **Important**: Both `SYNC_USER1` and `ANTHROPIC_API_KEY` are **required**. The deployment will fail without them.
+
+4. **Configure Ports** (if needed)
+   - MCP Server: Port `8080` (if you want external HTTP/SSE access)
+   - Sync Server: Port `8080` (used by Anki clients)
+
+5. **Deploy**
+   - Click "Deploy"
+   - Monitor build logs for any errors
+   - First build will take 3-5 minutes
+
+6. **Verify Deployment**
+   ```bash
+   # Check MCP server logs
+   docker logs <container-name> | grep "Anki MCP Server"
+
+   # Should see: "Initialized Anki MCP Server for user: myusername"
+   ```
+
+### Coolify Environment Variables Reference
+
+| Variable | Required | Example | Purpose |
+|----------|----------|---------|---------|
+| `SYNC_USER1` | ✅ Yes | `john:secretpass123` | Anki sync credentials |
+| `ANTHROPIC_API_KEY` | ✅ Yes | `sk-ant-api03-xxx...` | Claude API access |
+| `AUTO_GENERATE` | No | `true` | Enable proactive flashcard mode |
+| `MCP_PORT` | No | `8080` | MCP server port |
+| `DATA_PATH` | No | `/data/anki-sync` | Persistent storage path |
+
+### Troubleshooting Coolify Deployment
+
+**Build fails with "exit code 8" or wget error:**
+- This was an issue with Anki 25.09.2 - now fixed to use 24.06.3
+- If you still see errors, check network connectivity in build container
+
+**"Please set SYNC_USER1" error:**
+- Go to Environment Variables tab in Coolify
+- Add `SYNC_USER1` in format `username:password`
+- Redeploy
+
+**"Please set ANTHROPIC_API_KEY" error:**
+- Get API key from: https://console.anthropic.com/
+- Add to Coolify Environment Variables
+- Format: `sk-ant-api03-...` (starts with `sk-ant-`)
+
+**MCP server not starting:**
+```bash
+# Check logs in Coolify dashboard
+docker logs mcp-flashcard-server
+
+# Common issues:
+# - Missing environment variables
+# - Invalid API key format
+# - Sync server not ready (wait 30 seconds and restart)
+```
+
+The MCP server will be available on port 8080 for HTTP/SSE access.
 
 ## MCP Tools Available
 
