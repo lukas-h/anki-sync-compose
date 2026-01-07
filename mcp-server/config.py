@@ -13,7 +13,7 @@ class Config:
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 
     # MCP Server
-    MCP_PORT: int = int(os.getenv("MCP_PORT", "8080"))
+    MCP_PORT: int = int(os.getenv("MCP_PORT", "3000"))
     AUTO_GENERATE: bool = os.getenv("AUTO_GENERATE", "true").lower() == "true"
 
     # Anki Sync Server

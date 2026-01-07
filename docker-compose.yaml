@@ -23,12 +23,12 @@ services:
       # MCP server specific
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:?Please set ANTHROPIC_API_KEY}
       - AUTO_GENERATE=${AUTO_GENERATE:-true}
-      - MCP_PORT=${MCP_PORT:-8080}
+      - MCP_PORT=${MCP_PORT:-3000}
     volumes:
       # Share the same data volume as sync server
       - ${DATA_PATH:-./syncserver}:/syncserver
     ports:
-      - "${MCP_PORT:-8080}:8080"
+      - "${MCP_PORT:-3000}:3000"
     depends_on:
       - anki-sync-server
     stdin_open: true
