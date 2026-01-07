@@ -7,10 +7,6 @@ services:
       network: host
     environment:
       - SYNC_USER1=${SYNC_USER1:?Please set SYNC_USER1 in format user:pass}
-      - SYNC_USER2=${SYNC_USER2:-}
-      - SYNC_USER3=${SYNC_USER3:-}
-      - SYNC_USER4=${SYNC_USER4:-}
-      - SYNC_USER5=${SYNC_USER5:-}
       - SYNC_BASE=${SYNC_BASE:-/syncserver}
     volumes:
       - ${DATA_PATH:-./syncserver}:/syncserver
@@ -23,20 +19,16 @@ services:
     environment:
       # Shared credentials with sync server
       - SYNC_USER1=${SYNC_USER1:?Please set SYNC_USER1 in format user:pass}
-      - SYNC_USER2=${SYNC_USER2:-}
-      - SYNC_USER3=${SYNC_USER3:-}
-      - SYNC_USER4=${SYNC_USER4:-}
-      - SYNC_USER5=${SYNC_USER5:-}
       - SYNC_BASE=${SYNC_BASE:-/syncserver}
       # MCP server specific
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:?Please set ANTHROPIC_API_KEY}
       - AUTO_GENERATE=${AUTO_GENERATE:-true}
-      - MCP_PORT=${MCP_PORT:-8080}
+      - MCP_PORT=${MCP_PORT:-3000}
     volumes:
       # Share the same data volume as sync server
       - ${DATA_PATH:-./syncserver}:/syncserver
     ports:
-      - "${MCP_PORT:-8080}:8080"
+      - "${MCP_PORT:-3000}:3000"
     depends_on:
       - anki-sync-server
     stdin_open: true

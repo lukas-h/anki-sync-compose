@@ -53,7 +53,7 @@ Configure these in the Coolify environment variables tab or in a `.env` file:
 - `AUTO_GENERATE` - Enable proactive flashcard generation (default: `true`)
   - `true` = AI automatically creates cards during educational conversations
   - `false` = Cards only created when explicitly requested
-- `MCP_PORT` - HTTP/SSE port for MCP server (default: `8080`)
+- `MCP_PORT` - HTTP/SSE port for MCP server (default: `3000`)
 
 ## Quick Start
 
@@ -149,14 +149,14 @@ Claude: [Creates flashcards]
    **Optional variables** (recommended):
    ```
    AUTO_GENERATE=true
-   MCP_PORT=8080
+   MCP_PORT=3000
    DATA_PATH=/data/anki-sync
    ```
 
    ⚠️ **Important**: Both `SYNC_USER1` and `ANTHROPIC_API_KEY` are **required**. The deployment will fail without them.
 
 4. **Configure Ports** (if needed)
-   - MCP Server: Port `8080` (if you want external HTTP/SSE access)
+   - MCP Server: Port `3000` (currently uses stdio, HTTP/SSE for future use)
    - Sync Server: Port `8080` (used by Anki clients)
 
 5. **Deploy**
@@ -179,7 +179,7 @@ Claude: [Creates flashcards]
 | `SYNC_USER1` | ✅ Yes | `john:secretpass123` | Anki sync credentials |
 | `ANTHROPIC_API_KEY` | ✅ Yes | `sk-ant-api03-xxx...` | Claude API access |
 | `AUTO_GENERATE` | No | `true` | Enable proactive flashcard mode |
-| `MCP_PORT` | No | `8080` | MCP server port |
+| `MCP_PORT` | No | `3000` | MCP server port |
 | `DATA_PATH` | No | `/data/anki-sync` | Persistent storage path |
 
 ### Troubleshooting Coolify Deployment
@@ -209,7 +209,7 @@ docker logs mcp-flashcard-server
 # - Sync server not ready (wait 30 seconds and restart)
 ```
 
-The MCP server will be available on port 8080 for HTTP/SSE access.
+The MCP server will be available on port 3000 for future HTTP/SSE access (currently uses stdio).
 
 ## MCP Tools Available
 
