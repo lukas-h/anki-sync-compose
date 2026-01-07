@@ -4,7 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      network: host
+    ports:
+      - "27015:8080"
     environment:
       - SYNC_USER1=${SYNC_USER1:?Please set SYNC_USER1 in format user:pass}
       - SYNC_BASE=${SYNC_BASE:-/syncserver}
@@ -27,8 +28,6 @@ services:
     volumes:
       # Share the same data volume as sync server
       - ${DATA_PATH:-./syncserver}:/syncserver
-    ports:
-      - "${MCP_PORT:-3000}:3000"
     depends_on:
       - anki-sync-server
     stdin_open: true

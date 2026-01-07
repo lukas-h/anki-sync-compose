@@ -23,8 +23,5 @@ RUN chmod +x server.py
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Expose port for HTTP/SSE (if needed in future)
-EXPOSE 8080
-
-# Run the MCP server
+# Run the MCP server (uses stdio, no HTTP port needed)
 CMD ["python", "server.py"]
